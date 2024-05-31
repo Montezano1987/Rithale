@@ -1,11 +1,14 @@
-﻿using Rhitale.Entities;
+﻿using System;
+using System.ComponentModel.Design;
+using System.Globalization;
+using Rhitale.Entities;
 using Rhitale.Entities.Enums;
 
 namespace Rhitale;
 
 class Program
 {
-
+    static List<MenuCommand>;
 
     static List<Profissional> profissionais = new List<Profissional>
     {
@@ -28,14 +31,12 @@ class Program
         Console.WriteLine("Bem vindos a Clínica Rhitale");
         Console.WriteLine();
 
-
         Cliente cliente = CriarCliente();
         Profissional profissional = EscolherProfissional();
         Servico servico = EscolherServico();
         DateTime data = EscolherData();
-        TimeSpan hora = EscolherHora();
 
-        Agendamento agendamento = new Agendamento(cliente, profissional, servico, data, hora, StatusAgendamento.Pendente);
+        Agendamento agendamento = new Agendamento(cliente, profissional, servico, data, StatusAgendamento.Pendente);
 
         Console.WriteLine("Detalhes do Agendamento:");
         Console.WriteLine(agendamento);
@@ -109,28 +110,15 @@ class Program
 
     static DateTime EscolherData()
     {
-        Console.WriteLine("Escolha uma data para o agendamento:");
+        Console.WriteLine("Escolha uma data para o agendamento e hora:");
         DateTime data;
-        while (!DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy", null, System.Globalization.DateTimeStyles.None, out data))
+        while (!DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out data))
         {
-            Console.WriteLine("Formato de data inválido. Tente novamente.");
-            Console.Write("Data e Hora (dd/MM/yyyy): ");
+            Console.WriteLine("Formato de data e hora inválido. Tente novamente.");
+            Console.Write("Data e Hora (dd/MM/yyyy HH:mm): ");
         }
 
         return data;
     }
 
-    static TimeSpan EscolherHora()
-    {
-        Console.WriteLine("Escolha a hora para o agendamento (HH:mm):");
-        TimeSpan hora;
-
-        while (!TimeSpan.TryParseExact(Console.ReadLine(), "HH:mm", null, System.Globalization.TimeSpanStyles.None, out hora))
-        {
-            Console.WriteLine("Formato de hora inválido. Tente novamente.");
-            Console.Write("Hora (HH:mm): ");
-        }
-
-        return hora;
-    }
 }
