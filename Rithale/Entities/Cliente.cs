@@ -1,21 +1,21 @@
-﻿namespace Rhitale.Entities;
-public class Cliente
+﻿namespace Rhitale.Entities
 {
-    public string Nome { get; set; }
-    public string Cpf { get; set; }
-    public string Email { get; set; }
-    public string Telefone { get; set; }
-
-    public Cliente(string nome, string cpf, string email, string telefone)
+    public class Cliente
     {
-        Nome = nome;
-        Cpf = cpf;
-        Email = email;
-        Telefone = telefone;
-    }
+        public string Nome { get; set; }
+        public string Email { get; set; }
+        public string Telefone { get; set; }
 
-    public override string ToString()
-    {
-        return $"Cliente: {Nome}, CPF: {Cpf}, Email: {Email}, Telefone: {Telefone}";
+        public Cliente(string nome, string email, string telefone)
+        {
+            Nome = nome;
+            Email = email;
+            Telefone = telefone;
+        }
+
+        public override string ToString()
+        {
+            return $"Cliente: {Nome}, Email: {Email}, Telefone: {Telefone}";
+        }
     }
 }

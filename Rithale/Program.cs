@@ -1,124 +1,146 @@
-﻿using System;
-using System.ComponentModel.Design;
-using System.Globalization;
-using Rhitale.Entities;
+﻿using Rhitale.Entities;
 using Rhitale.Entities.Enums;
+using Rhitale.Entities.Clientes;
 
-namespace Rhitale;
-
-class Program
+namespace Rhitale
 {
-    static List<MenuCommand>;
-
-    static List<Profissional> profissionais = new List<Profissional>
+    class Program
     {
-        new Profissional("Thamiris Montezano", "Biomedica!"),
-        new Profissional("Aline Ribeiro", "Esteticista!"),
-        new Profissional("Andreia", "Massoterapeuta!"),
-        new Profissional("Cassiane", "Manicure!"),
-    };
-
-    static List<Servico> servicos = new List<Servico>
-    {
-        new Servico("Depilação a Laser", 200.00),
-        new Servico("Limpeza de Pele", 80.00),
-        new Servico("Massagem", 100.00),
-        new Servico("Mão e Pé", 50.00),
-    };
-
-    static void Main(string[] args)
-    {
-        Console.WriteLine("Bem vindos a Clínica Rhitale");
-        Console.WriteLine();
-
-        Cliente cliente = CriarCliente();
-        Profissional profissional = EscolherProfissional();
-        Servico servico = EscolherServico();
-        DateTime data = EscolherData();
-
-        Agendamento agendamento = new Agendamento(cliente, profissional, servico, data, StatusAgendamento.Pendente);
-
-        Console.WriteLine("Detalhes do Agendamento:");
-        Console.WriteLine(agendamento);
-    }
-
-    static Cliente CriarCliente()
-    {
-        Console.WriteLine("Informe os dados do cliente:");
-        Console.Write("Nome: ");
-        string nome = Console.ReadLine();
-        Console.Write("CPF: ");
-        string cpf = Console.ReadLine();
-        Console.Write("Email: ");
-        string email = Console.ReadLine();
-        Console.Write("Telefone: ");
-        string telefone = Console.ReadLine();
-
-        return new Cliente
-            (nome, cpf, email, telefone);
-    }
-
-    static Profissional EscolherProfissional()
-    {
-        Console.WriteLine("Escolha um profissional:");
-        int i = 1;
-        foreach (var profissional in profissionais)
+        static List<Profissional> profissionais = new List<Profissional>
         {
-            Console.WriteLine($"{i}. {profissional}");
-            i++;
+            new Profissional("Thamiris Montezano", "Biomedica!"),
+            new Profissional("Aline Ribeiro", "Esteticista!"),
+            new Profissional("Andreia", "Massoterapeuta!"),
+            new Profissional("Cassiane", "Manicure!"),
+        };
+
+        static List<Servico> servicos = new List<Servico>
+        {
+            new Servico("Depilação a Laser", 200.00),
+            new Servico("Limpeza de Pele", 80.00),
+            new Servico("Massagem", 100.00),
+            new Servico("Mão e Pé", 50.00),
+        };
+
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Bem vindos a Clínica Rhitale");
+            Console.WriteLine();
+
+            Cliente cliente = CriarCliente();
+            Profissional profissional = EscolherProfissional();
+            Servico servico = EscolherServico();
+            DateTime data = EscolherData();
+
+            Agendamento agendamento = new Agendamento(cliente, profissional, servico, data, StatusAgendamento.Pendente);
+
+            Console.WriteLine("Detalhes do Agendamento:");
+            Console.WriteLine(agendamento);
         }
 
-        int escolha;
-        while (true)
+        static Cliente CriarCliente()
         {
-            Console.Write("Opção: ");
-            if (int.TryParse(Console.ReadLine(), out escolha) && escolha >= 1 && escolha <= profissionais.Count)
+            Console.WriteLine("Informe os dados do cliente:");
+            Console.WriteLine("Escolha o tipo de cliente:");
+            Console.WriteLine("1. Pessoa Física");
+            Console.WriteLine("2. Pessoa Jurídica");
+
+            int tipoCliente;
+            while (true)
             {
-                return profissionais[escolha - 1];
+                Console.Write("Opção: ");
+                if (int.TryParse(Console.ReadLine(), out tipoCliente) && (tipoCliente == 1 || tipoCliente == 2))
+                {
+                    break;
+                }
+                else
+                {
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                }
+            }
+
+            Console.Write("Nome: ");
+            string nome = Console.ReadLine();
+            Console.Write("Email: ");
+            string email = Console.ReadLine();
+            Console.Write("Telefone: ");
+            string telefone = Console.ReadLine();
+
+            if (tipoCliente == 1)
+            {
+                Console.Write("CPF: ");
+                string cpf = Console.ReadLine();
+                return new ClientePF(nome, email, telefone, cpf);
             }
             else
             {
-                Console.WriteLine("Opção inválida. Tente novamente.");
+                Console.Write("CNPJ: ");
+                string cnpj = Console.ReadLine();
+                return new ClientePJ(nome, email, telefone, cnpj);
             }
         }
-    }
 
-    static Servico EscolherServico()
-    {
-        Console.WriteLine("Escolha um serviço:");
-        int i = 1;
-        foreach (var servico in servicos)
+        static Profissional EscolherProfissional()
         {
-            Console.WriteLine($"{i}. {servico}");
-            i++;
-        }
-
-        int escolha;
-        while (true)
-        {
-            Console.Write("Opção: ");
-            if (int.TryParse(Console.ReadLine(), out escolha) && escolha >= 1 && escolha <= servicos.Count)
+            Console.WriteLine("Escolha um profissional:");
+            int i = 1;
+            foreach (var profissional in profissionais)
             {
-                return servicos[escolha - 1];
+                Console.WriteLine($"{i}. {profissional}");
+                i++;
             }
-            else
+
+            int escolha;
+            while (true)
             {
-                Console.WriteLine("Opção inválida. Tente novamente.");
+                Console.Write("Opção: ");
+                if (int.TryParse(Console.ReadLine(), out escolha) && escolha >= 1 && escolha <= profissionais.Count)
+                {
+                    return profissionais[escolha - 1];
+                }
+                else
+                {
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                }
             }
         }
-    }
 
-    static DateTime EscolherData()
-    {
-        Console.WriteLine("Escolha uma data para o agendamento e hora:");
-        DateTime data;
-        while (!DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out data))
+        static Servico EscolherServico()
         {
-            Console.WriteLine("Formato de data e hora inválido. Tente novamente.");
-            Console.Write("Data e Hora (dd/MM/yyyy HH:mm): ");
+            Console.WriteLine("Escolha um serviço:");
+            int i = 1;
+            foreach (var servico in servicos)
+            {
+                Console.WriteLine($"{i}. {servico}");
+                i++;
+            }
+
+            int escolha;
+            while (true)
+            {
+                Console.Write("Opção: ");
+                if (int.TryParse(Console.ReadLine(), out escolha) && escolha >= 1 && escolha <= servicos.Count)
+                {
+                    return servicos[escolha - 1];
+                }
+                else
+                {
+                    Console.WriteLine("Opção inválida. Tente novamente.");
+                }
+            }
         }
 
-        return data;
-    }
+        static DateTime EscolherData()
+        {
+            Console.WriteLine("Escolha uma data para o agendamento e hora:");
+            DateTime data;
+            while (!DateTime.TryParseExact(Console.ReadLine(), "dd/MM/yyyy HH:mm", null, System.Globalization.DateTimeStyles.None, out data))
+            {
+                Console.WriteLine("Formato de data e hora inválido. Tente novamente.");
+                Console.Write("Data e Hora (dd/MM/yyyy HH:mm): ");
+            }
 
+            return data;
+        }
+    }
 }
