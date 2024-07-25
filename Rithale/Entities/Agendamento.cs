@@ -22,6 +22,11 @@ public class Agendamento
 
     public override string ToString()
     {
-        return $"Agendamento: {Cliente}, {Profissional}, {Servico}, Data: {Data:dd/MM/yyyy HH/mm}, Status: {Status}";
+        return $"Agendamento:\n" +
+           $"{Cliente}\n" +
+           $"{Profissional}\n" +
+           $"{Servico}\n" +
+           $"{Data:dd/MM/yyyy HH:mm}\n" +
+           $"{Status}";
     }
 }
